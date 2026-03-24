@@ -7,9 +7,16 @@ export default function Index() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [error, setError] = useState("");
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/dashboard");
+    if (email === "admin" && password === "admin") {
+      localStorage.setItem("auth", "true");
+      navigate("/dashboard");
+    } else {
+      setError("Usuário ou senha inválidos");
+    }
   };
 
   return (
