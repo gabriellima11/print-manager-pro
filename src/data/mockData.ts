@@ -31,9 +31,14 @@ export interface Evento {
 }
 
 export const sedes: Sede[] = [
-  { id: "1", nome: "Matriz - Curitiba" },
-  { id: "2", nome: "Filial - São Paulo" },
-  { id: "3", nome: "Filial - Florianópolis" },
+  { id: "1", nome: "Premium Clube - Barro Preto" },
+  { id: "2", nome: "Premium Clube - Grow" },
+  { id: "3", nome: "Plamev" },
+  { id: "4", nome: "Meep" },
+  { id: "5", nome: "TaRastreado" },
+  { id: "6", nome: "EssentialBPO" },
+  { id: "7", nome: "SouthTI" },
+  { id: "8", nome: "Pronto Assistência" },
 ];
 
 export const printers: Printer[] = [
@@ -44,47 +49,47 @@ export const printers: Printer[] = [
   },
   {
     id: "2", nome: "HP LaserJet Pro M404", ip: "192.168.1.101", modelo: "M404n",
-    tipo: "MONO", sede_id: "1", status: "online", page_count: 48200,
+    tipo: "MONO", sede_id: "2", status: "online", page_count: 48200,
     toners: { black: 72 }, last_seen: "2026-03-24T10:00:00Z",
   },
   {
-    id: "3", nome: "Brother HL-L3270CDW", ip: "192.168.1.102", modelo: "HL-L3270CDW",
-    tipo: "COLOR", sede_id: "1", status: "online", page_count: 12300,
+    id: "3", nome: "Brother HL-L3270CDW", ip: "192.168.2.102", modelo: "HL-L3270CDW",
+    tipo: "COLOR", sede_id: "3", status: "online", page_count: 12300,
     toners: { black: 55, cyan: 30, magenta: 45, yellow: 5 }, last_seen: "2026-03-24T10:00:00Z",
   },
   {
-    id: "4", nome: "Xerox VersaLink C400", ip: "192.168.2.50", modelo: "C400DN",
-    tipo: "COLOR", sede_id: "2", status: "offline", page_count: 67800,
+    id: "4", nome: "Xerox VersaLink C400", ip: "192.168.3.50", modelo: "C400DN",
+    tipo: "COLOR", sede_id: "4", status: "offline", page_count: 67800,
     toners: { black: 15, cyan: 22, magenta: 60, yellow: 38 }, last_seen: "2026-03-24T08:30:00Z",
   },
   {
-    id: "5", nome: "HP LaserJet Enterprise M507", ip: "192.168.2.51", modelo: "M507dn",
-    tipo: "MONO", sede_id: "2", status: "online", page_count: 102500,
+    id: "5", nome: "HP LaserJet Enterprise M507", ip: "192.168.4.51", modelo: "M507dn",
+    tipo: "MONO", sede_id: "5", status: "online", page_count: 102500,
     toners: { black: 9 }, last_seen: "2026-03-24T10:00:00Z",
   },
   {
-    id: "6", nome: "Lexmark CS431dw", ip: "192.168.2.52", modelo: "CS431dw",
-    tipo: "COLOR", sede_id: "2", status: "online", page_count: 8900,
+    id: "6", nome: "Lexmark CS431dw", ip: "192.168.5.52", modelo: "CS431dw",
+    tipo: "COLOR", sede_id: "6", status: "online", page_count: 8900,
     toners: { black: 88, cyan: 92, magenta: 85, yellow: 90 }, last_seen: "2026-03-24T10:00:00Z",
   },
   {
-    id: "7", nome: "Epson WorkForce Pro WF-C5890", ip: "192.168.3.10", modelo: "WF-C5890",
-    tipo: "COLOR", sede_id: "3", status: "online", page_count: 34600,
+    id: "7", nome: "Epson WorkForce Pro WF-C5890", ip: "192.168.6.10", modelo: "WF-C5890",
+    tipo: "COLOR", sede_id: "7", status: "online", page_count: 34600,
     toners: { black: 45, cyan: 7, magenta: 52, yellow: 63 }, last_seen: "2026-03-24T10:00:00Z",
   },
   {
-    id: "8", nome: "Samsung ProXpress M4020", ip: "192.168.3.11", modelo: "M4020ND",
-    tipo: "MONO", sede_id: "3", status: "online", page_count: 55100,
+    id: "8", nome: "Samsung ProXpress M4020", ip: "192.168.7.11", modelo: "M4020ND",
+    tipo: "MONO", sede_id: "7", status: "online", page_count: 55100,
     toners: { black: 28 }, last_seen: "2026-03-24T10:00:00Z",
   },
   {
-    id: "9", nome: "Canon imageCLASS MF746Cdw", ip: "192.168.3.12", modelo: "MF746Cdw",
-    tipo: "COLOR", sede_id: "3", status: "offline", page_count: 19200,
+    id: "9", nome: "Canon imageCLASS MF746Cdw", ip: "192.168.7.12", modelo: "MF746Cdw",
+    tipo: "COLOR", sede_id: "8", status: "offline", page_count: 19200,
     toners: { black: 3, cyan: 48, magenta: 12, yellow: 55 }, last_seen: "2026-03-23T22:15:00Z",
   },
   {
-    id: "10", nome: "HP Color LaserJet MFP M480f", ip: "192.168.1.103", modelo: "M480f",
-    tipo: "COLOR", sede_id: "1", status: "online", page_count: 41700,
+    id: "10", nome: "HP Color LaserJet MFP M480f", ip: "192.168.0.103", modelo: "M480f",
+    tipo: "COLOR", sede_id: "8", status: "online", page_count: 41700,
     toners: { black: 62, cyan: 10, magenta: 73, yellow: 81 }, last_seen: "2026-03-24T10:00:00Z",
   },
 ];
@@ -110,9 +115,14 @@ export const usageByMonth = [
 ];
 
 export const usageBySede = [
-  { sede: "Curitiba", pages: 127600 },
-  { sede: "São Paulo", pages: 179200 },
-  { sede: "Florianópolis", pages: 108900 },
+  { sede: "P. Clube BP", pages: 67100 },
+  { sede: "P. Clube Grow", pages: 48200 },
+  { sede: "Plamev", pages: 12300 },
+  { sede: "Meep", pages: 67800 },
+  { sede: "TaRastreado", pages: 102500 },
+  { sede: "EssentialBPO", pages: 8900 },
+  { sede: "SouthTI", pages: 89700 },
+  { sede: "Pronto Assist.", pages: 60900 },
 ];
 
 export function getSedeNome(sedeId: string): string {
