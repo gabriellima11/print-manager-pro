@@ -14,7 +14,249 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      agentes: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          id: string
+          last_seen: string | null
+          nome: string
+          sede_id: string
+          sistema_operacional: string
+          token: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          id?: string
+          last_seen?: string | null
+          nome: string
+          sede_id: string
+          sistema_operacional?: string
+          token?: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          id?: string
+          last_seen?: string | null
+          nome?: string
+          sede_id?: string
+          sistema_operacional?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agentes_sede_id_fkey"
+            columns: ["sede_id"]
+            isOneToOne: false
+            referencedRelation: "sedes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eventos: {
+        Row: {
+          cor: string | null
+          descricao: string
+          id: string
+          impressora_id: string
+          resolvido: boolean
+          timestamp: string
+          tipo: string
+        }
+        Insert: {
+          cor?: string | null
+          descricao: string
+          id?: string
+          impressora_id: string
+          resolvido?: boolean
+          timestamp?: string
+          tipo: string
+        }
+        Update: {
+          cor?: string | null
+          descricao?: string
+          id?: string
+          impressora_id?: string
+          resolvido?: boolean
+          timestamp?: string
+          tipo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "eventos_impressora_id_fkey"
+            columns: ["impressora_id"]
+            isOneToOne: false
+            referencedRelation: "impressoras"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      impressoras: {
+        Row: {
+          created_at: string
+          id: string
+          ip: string
+          last_seen: string | null
+          modelo: string | null
+          nome: string
+          page_count: number
+          sede_id: string
+          status: string
+          tipo: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip: string
+          last_seen?: string | null
+          modelo?: string | null
+          nome: string
+          page_count?: number
+          sede_id: string
+          status?: string
+          tipo: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip?: string
+          last_seen?: string | null
+          modelo?: string | null
+          nome?: string
+          page_count?: number
+          sede_id?: string
+          status?: string
+          tipo?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impressoras_sede_id_fkey"
+            columns: ["sede_id"]
+            isOneToOne: false
+            referencedRelation: "sedes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leituras: {
+        Row: {
+          id: string
+          impressora_id: string
+          page_count: number
+          status: string
+          timestamp: string
+        }
+        Insert: {
+          id?: string
+          impressora_id: string
+          page_count: number
+          status: string
+          timestamp?: string
+        }
+        Update: {
+          id?: string
+          impressora_id?: string
+          page_count?: number
+          status?: string
+          timestamp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leituras_impressora_id_fkey"
+            columns: ["impressora_id"]
+            isOneToOne: false
+            referencedRelation: "impressoras"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leituras_toner: {
+        Row: {
+          cor: string
+          id: string
+          impressora_id: string
+          nivel: number
+          timestamp: string
+        }
+        Insert: {
+          cor: string
+          id?: string
+          impressora_id: string
+          nivel: number
+          timestamp?: string
+        }
+        Update: {
+          cor?: string
+          id?: string
+          impressora_id?: string
+          nivel?: number
+          timestamp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leituras_toner_impressora_id_fkey"
+            columns: ["impressora_id"]
+            isOneToOne: false
+            referencedRelation: "impressoras"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sedes: {
+        Row: {
+          created_at: string
+          id: string
+          nome: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          nome: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nome?: string
+        }
+        Relationships: []
+      }
+      toners: {
+        Row: {
+          cor: string
+          id: string
+          impressora_id: string
+          nivel_atual: number
+          updated_at: string
+        }
+        Insert: {
+          cor: string
+          id?: string
+          impressora_id: string
+          nivel_atual?: number
+          updated_at?: string
+        }
+        Update: {
+          cor?: string
+          id?: string
+          impressora_id?: string
+          nivel_atual?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "toners_impressora_id_fkey"
+            columns: ["impressora_id"]
+            isOneToOne: false
+            referencedRelation: "impressoras"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
