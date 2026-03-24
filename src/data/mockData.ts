@@ -115,9 +115,14 @@ export const usageByMonth = [
 ];
 
 export const usageBySede = [
-  { sede: "Curitiba", pages: 127600 },
-  { sede: "São Paulo", pages: 179200 },
-  { sede: "Florianópolis", pages: 108900 },
+  { sede: "P. Clube BP", pages: 67100 },
+  { sede: "P. Clube Grow", pages: 48200 },
+  { sede: "Plamev", pages: 12300 },
+  { sede: "Meep", pages: 67800 },
+  { sede: "TaRastreado", pages: 102500 },
+  { sede: "EssentialBPO", pages: 8900 },
+  { sede: "SouthTI", pages: 89700 },
+  { sede: "Pronto Assist.", pages: 60900 },
 ];
 
 export function getSedeNome(sedeId: string): string {
