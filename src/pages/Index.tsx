@@ -56,13 +56,16 @@ export default function Index() {
           <form onSubmit={handleLogin} className="space-y-5">
             <div className="glass-card rounded-xl p-6 space-y-4">
               <h3 className="text-base font-semibold text-foreground">Entrar no sistema</h3>
+              {error && (
+                <p className="text-xs text-destructive bg-destructive/10 px-3 py-2 rounded-lg">{error}</p>
+              )}
               <div className="space-y-1.5">
-                <label className="text-sm text-foreground">E-mail</label>
+                <label className="text-sm text-foreground">Usuário</label>
                 <input
-                  type="email"
+                  type="text"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="seu@email.com"
+                  onChange={(e) => { setEmail(e.target.value); setError(""); }}
+                  placeholder="admin"
                   className="w-full px-3 py-2.5 bg-secondary border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
