@@ -31,9 +31,14 @@ export interface Evento {
 }
 
 export const sedes: Sede[] = [
-  { id: "1", nome: "Matriz - Curitiba" },
-  { id: "2", nome: "Filial - São Paulo" },
-  { id: "3", nome: "Filial - Florianópolis" },
+  { id: "1", nome: "Premium Clube - Barro Preto" },
+  { id: "2", nome: "Premium Clube - Grow" },
+  { id: "3", nome: "Plamev" },
+  { id: "4", nome: "Meep" },
+  { id: "5", nome: "TaRastreado" },
+  { id: "6", nome: "EssentialBPO" },
+  { id: "7", nome: "SouthTI" },
+  { id: "8", nome: "Pronto Assistência" },
 ];
 
 export const printers: Printer[] = [
