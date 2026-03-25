@@ -1,8 +1,12 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { printers, sedes, getSedeNome } from "@/data/mockData";
-import { FileText, Download } from "lucide-react";
+import { usePrinters, useSedes } from "@/hooks/usePrinterData";
+import { FileText, Download, Loader2 } from "lucide-react";
 
 export default function Relatorios() {
+  const { data: sedes = [], isLoading: sLoading } = useSedes();
+  const { data: printers = [], isLoading: pLoading } = usePrinters();
+  const isLoading = sLoading || pLoading;
+
   const sedeStats = sedes.map((s) => {
     const sedePrinters = printers.filter((p) => p.sede_id === s.id);
     const totalPages = sedePrinters.reduce((sum, p) => sum + p.page_count, 0);
@@ -24,39 +28,44 @@ export default function Relatorios() {
           </button>
         </div>
 
-        {/* Summary table */}
-        <div className="glass-card rounded-xl overflow-hidden">
-          <div className="p-4 border-b border-border flex items-center gap-2">
-            <FileText className="w-4 h-4 text-primary" />
-            <h3 className="text-sm font-semibold text-foreground">Resumo por Sede — Março 2026</h3>
+        {isLoading ? (
+          <div className="flex items-center justify-center h-32">
+            <Loader2 className="w-6 h-6 animate-spin text-primary" />
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="text-left p-4 text-muted-foreground font-medium">Sede</th>
-                  <th className="text-center p-4 text-muted-foreground font-medium">Impressoras</th>
-                  <th className="text-center p-4 text-muted-foreground font-medium">Total Páginas</th>
-                  <th className="text-center p-4 text-muted-foreground font-medium">Offline</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sedeStats.map((s) => (
-                  <tr key={s.id} className="border-b border-border/50 hover:bg-secondary/30 transition-colors">
-                    <td className="p-4 text-foreground font-medium">{s.nome}</td>
-                    <td className="p-4 text-center text-foreground">{s.printerCount}</td>
-                    <td className="p-4 text-center text-foreground font-semibold">{s.totalPages.toLocaleString("pt-BR")}</td>
-                    <td className="p-4 text-center">
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${s.offlineCount > 0 ? "bg-destructive/10 text-destructive" : "bg-success/10 text-success"}`}>
-                        {s.offlineCount}
-                      </span>
-                    </td>
+        ) : (
+          <div className="glass-card rounded-xl overflow-hidden">
+            <div className="p-4 border-b border-border flex items-center gap-2">
+              <FileText className="w-4 h-4 text-primary" />
+              <h3 className="text-sm font-semibold text-foreground">Resumo por Sede — Março 2026</h3>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="text-left p-4 text-muted-foreground font-medium">Sede</th>
+                    <th className="text-center p-4 text-muted-foreground font-medium">Impressoras</th>
+                    <th className="text-center p-4 text-muted-foreground font-medium">Total Páginas</th>
+                    <th className="text-center p-4 text-muted-foreground font-medium">Offline</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {sedeStats.map((s) => (
+                    <tr key={s.id} className="border-b border-border/50 hover:bg-secondary/30 transition-colors">
+                      <td className="p-4 text-foreground font-medium">{s.nome}</td>
+                      <td className="p-4 text-center text-foreground">{s.printerCount}</td>
+                      <td className="p-4 text-center text-foreground font-semibold">{s.totalPages.toLocaleString("pt-BR")}</td>
+                      <td className="p-4 text-center">
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${s.offlineCount > 0 ? "bg-destructive/10 text-destructive" : "bg-success/10 text-success"}`}>
+                          {s.offlineCount}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </DashboardLayout>
   );

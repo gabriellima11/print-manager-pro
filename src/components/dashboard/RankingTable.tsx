@@ -1,7 +1,9 @@
-import { printers, getSedeNome } from "@/data/mockData";
+import { usePrinters, useSedes, getSedeNome } from "@/hooks/usePrinterData";
 import { Trophy } from "lucide-react";
 
 export default function RankingTable() {
+  const { data: printers = [] } = usePrinters();
+  const { data: sedes = [] } = useSedes();
   const sorted = [...printers].sort((a, b) => b.page_count - a.page_count).slice(0, 5);
 
   return (
@@ -11,6 +13,7 @@ export default function RankingTable() {
         <h3 className="text-sm font-semibold text-foreground">Top Impressoras (Uso)</h3>
       </div>
       <div className="space-y-3">
+        {sorted.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma impressora cadastrada</p>}
         {sorted.map((p, i) => (
           <div key={p.id} className="flex items-center gap-3">
             <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
@@ -20,7 +23,7 @@ export default function RankingTable() {
             </span>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-foreground truncate">{p.nome}</p>
-              <p className="text-xs text-muted-foreground">{getSedeNome(p.sede_id)}</p>
+              <p className="text-xs text-muted-foreground">{getSedeNome(sedes, p.sede_id)}</p>
             </div>
             <span className="text-sm font-bold text-foreground">{p.page_count.toLocaleString("pt-BR")}</span>
           </div>

@@ -1,13 +1,16 @@
 import { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import PrinterCard from "@/components/dashboard/PrinterCard";
-import { printers, sedes } from "@/data/mockData";
-import { Search } from "lucide-react";
+import { usePrinters, useSedes } from "@/hooks/usePrinterData";
+import { Search, Loader2 } from "lucide-react";
 
 export default function Impressoras() {
   const [search, setSearch] = useState("");
   const [sedeFilter, setSedeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+
+  const { data: printers = [], isLoading } = usePrinters();
+  const { data: sedes = [] } = useSedes();
 
   const filtered = printers.filter((p) => {
     if (search && !p.nome.toLowerCase().includes(search.toLowerCase()) && !p.ip.includes(search)) return false;
@@ -24,7 +27,6 @@ export default function Impressoras() {
           <p className="text-sm text-muted-foreground mt-1">{printers.length} dispositivos monitorados</p>
         </div>
 
-        {/* Filters */}
         <div className="flex flex-wrap gap-3">
           <div className="relative flex-1 min-w-[200px] max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -57,16 +59,21 @@ export default function Impressoras() {
           </select>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {filtered.map((p) => (
-            <PrinterCard key={p.id} printer={p} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="flex items-center justify-center h-32">
+            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {filtered.map((p) => (
+              <PrinterCard key={p.id} printer={p} />
+            ))}
+          </div>
+        )}
 
-        {filtered.length === 0 && (
+        {!isLoading && filtered.length === 0 && (
           <div className="text-center py-12 text-muted-foreground">
-            Nenhuma impressora encontrada com os filtros selecionados.
+            Nenhuma impressora encontrada.
           </div>
         )}
       </div>
