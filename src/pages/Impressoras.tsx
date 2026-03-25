@@ -1,13 +1,15 @@
 import { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import PrinterCard from "@/components/dashboard/PrinterCard";
-import { usePrinters, useSedes } from "@/hooks/usePrinterData";
+import PrinterDetailsModal from "@/components/dashboard/PrinterDetailsModal";
+import { usePrinters, useSedes, PrinterWithToners } from "@/hooks/usePrinterData";
 import { Search, Loader2 } from "lucide-react";
 
 export default function Impressoras() {
   const [search, setSearch] = useState("");
   const [sedeFilter, setSedeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedPrinter, setSelectedPrinter] = useState<PrinterWithToners | null>(null);
 
   const { data: printers = [], isLoading } = usePrinters();
   const { data: sedes = [] } = useSedes();
@@ -66,7 +68,7 @@ export default function Impressoras() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {filtered.map((p) => (
-              <PrinterCard key={p.id} printer={p} />
+              <PrinterCard key={p.id} printer={p} onClick={() => setSelectedPrinter(p)} />
             ))}
           </div>
         )}
@@ -76,6 +78,12 @@ export default function Impressoras() {
             Nenhuma impressora encontrada.
           </div>
         )}
+
+        <PrinterDetailsModal 
+          printer={selectedPrinter} 
+          isOpen={!!selectedPrinter} 
+          onClose={() => setSelectedPrinter(null)} 
+        />
       </div>
     </DashboardLayout>
   );

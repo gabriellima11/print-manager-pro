@@ -4,19 +4,25 @@ import { Wifi, WifiOff } from "lucide-react";
 
 interface PrinterCardProps {
   printer: PrinterWithToners;
+  onClick?: () => void;
 }
 
-export default function PrinterCard({ printer }: PrinterCardProps) {
+export default function PrinterCard({ printer, onClick }: PrinterCardProps) {
   const { data: sedes = [] } = useSedes();
   const isOnline = printer.status === "online";
   const isColor = printer.tipo === "COLOR";
 
   return (
-    <div className={`glass-card rounded-xl p-5 transition-all hover:border-primary/30 ${!isOnline ? "border-destructive/30" : ""}`}>
+    <div 
+      onClick={onClick}
+      className={`glass-card rounded-xl p-5 transition-all hover:border-primary/50 cursor-pointer hover:shadow-lg ${!isOnline ? "border-destructive/30" : ""}`}
+    >
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-semibold text-foreground truncate">{printer.nome}</h3>
-          <p className="text-xs text-muted-foreground mt-0.5">{printer.ip} · {getSedeNome(sedes, printer.sede_id)}</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {printer.modelo ? `${printer.modelo} · ` : ""}{printer.ip} · {getSedeNome(sedes, printer.sede_id)}
+          </p>
         </div>
         <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${
           isOnline ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"

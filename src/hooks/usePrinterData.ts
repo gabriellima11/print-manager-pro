@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface Toner {
@@ -10,6 +10,7 @@ export interface PrinterWithToners {
   id: string;
   nome: string;
   ip: string;
+  mac_address: string | null;
   modelo: string | null;
   tipo: string;
   sede_id: string;
@@ -83,6 +84,59 @@ export function usePrinters() {
           toners: buildTonersMap(printerToners),
         };
       });
+    },
+  });
+}
+
+export function useUpdatePrinter() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (updates: { id: string; nome: string; ip: string; sede_id: string; page_count: number; mac_address: string | null; tipo: string; modelo: string | null }) => {
+      const { id, ...data } = updates;
+      
+      const { data: updatedRows, error } = await supabase
+        .from("impressoras")
+        .update(data)
+        .eq("id", id)
+        .select();
+      
+      if (error) throw error;
+      
+      if (!updatedRows || updatedRows.length === 0) {
+         throw new Error("A atualização foi bloqueada pelo banco de dados. Isso geralmente significa que faltam as Políticas de RLS de UPDATE para a tabela.");
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["printers"] });
+    },
+  });
+}
+
+export function useDeletePrinter() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      // Deletar registros relacionados primeiro para evitar erro de Foreign Key (caso o CASCADE não esteja ativo)
+      await supabase.from("toners").delete().eq("impressora_id", id);
+      await supabase.from("eventos").delete().eq("impressora_id", id);
+      await supabase.from("leituras_toner").delete().eq("impressora_id", id);
+      await supabase.from("leituras").delete().eq("impressora_id", id);
+
+      const { data, error } = await supabase
+        .from("impressoras")
+        .delete()
+        .eq("id", id)
+        .select();
+
+      if (error) throw error;
+      if (!data || data.length === 0) {
+         throw new Error("A exclusão foi bloqueada pelo banco de dados (RLS) ou a impressora não existe.");
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["printers"] });
     },
   });
 }

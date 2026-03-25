@@ -55,6 +55,50 @@ export type Database = {
           },
         ]
       }
+      estoque_toners: {
+        Row: {
+          cor: string
+          created_at: string
+          id: string
+          impressora_compativel: string
+          modelo: string
+          quantidade: number
+          quantidade_minima: number
+          sede_id: string
+          updated_at: string
+        }
+        Insert: {
+          cor: string
+          created_at?: string
+          id?: string
+          impressora_compativel: string
+          modelo: string
+          quantidade?: number
+          quantidade_minima?: number
+          sede_id: string
+          updated_at?: string
+        }
+        Update: {
+          cor?: string
+          created_at?: string
+          id?: string
+          impressora_compativel?: string
+          modelo?: string
+          quantidade?: number
+          quantidade_minima?: number
+          sede_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estoque_toners_sede_id_fkey"
+            columns: ["sede_id"]
+            isOneToOne: false
+            referencedRelation: "sedes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       eventos: {
         Row: {
           cor: string | null
@@ -99,6 +143,7 @@ export type Database = {
           id: string
           ip: string
           last_seen: string | null
+          mac_address: string | null
           modelo: string | null
           nome: string
           page_count: number
@@ -112,6 +157,7 @@ export type Database = {
           id?: string
           ip: string
           last_seen?: string | null
+          mac_address?: string | null
           modelo?: string | null
           nome: string
           page_count?: number
@@ -125,6 +171,7 @@ export type Database = {
           id?: string
           ip?: string
           last_seen?: string | null
+          mac_address?: string | null
           modelo?: string | null
           nome?: string
           page_count?: number

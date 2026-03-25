@@ -53,12 +53,38 @@ Deno.serve(async (req) => {
     const results = [];
 
     for (const p of printers) {
-      // Upsert printer
-      const tipo = Object.keys(p.toners).length > 1 ? "COLOR" : "MONO";
-      const { data: printer, error: printerError } = await supabase
+      // Check if printer exists
+      const { data: existingPrinter } = await supabase
         .from("impressoras")
-        .upsert(
-          {
+        .select("id, status")
+        .eq("ip", p.ip)
+        .eq("sede_id", agent.sede_id)
+        .maybeSingle();
+
+      let printer;
+      let printerError;
+
+      if (existingPrinter) {
+        // Update only allowed fields
+        const { data, error } = await supabase
+          .from("impressoras")
+          .update({
+            status: p.status,
+            page_count: p.page_count,
+            last_seen: new Date().toISOString()
+          })
+          .eq("id", existingPrinter.id)
+          .select("id, status")
+          .single();
+          
+        printer = data;
+        printerError = error;
+      } else {
+        // Insert new printer
+        const tipo = Object.keys(p.toners).length > 1 ? "COLOR" : "MONO";
+        const { data, error } = await supabase
+          .from("impressoras")
+          .insert({
             nome: p.printer_name,
             ip: p.ip,
             modelo: p.model ?? null,
@@ -66,12 +92,14 @@ Deno.serve(async (req) => {
             sede_id: agent.sede_id,
             status: p.status,
             page_count: p.page_count,
-            last_seen: new Date().toISOString(),
-          },
-          { onConflict: "ip,sede_id" }
-        )
-        .select("id, status")
-        .single();
+            last_seen: new Date().toISOString()
+          })
+          .select("id, status")
+          .single();
+          
+        printer = data;
+        printerError = error;
+      }
 
       if (printerError) {
         console.error("Printer upsert error:", printerError);

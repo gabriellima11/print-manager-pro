@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { LayoutDashboard, Printer, AlertTriangle, BarChart3, Building2, Menu, X, LogOut } from "lucide-react";
+import { LayoutDashboard, Printer, AlertTriangle, BarChart3, Building2, Menu, X, LogOut, Package } from "lucide-react";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -8,6 +8,7 @@ const navItems = [
   { to: "/alertas", icon: AlertTriangle, label: "Alertas" },
   { to: "/relatorios", icon: BarChart3, label: "Relatórios" },
   { to: "/sedes", icon: Building2, label: "Sedes" },
+  { to: "/estoque", icon: Package, label: "Estoque" },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

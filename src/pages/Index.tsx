@@ -1,21 +1,37 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Printer, LogIn } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export default function Index() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email === "admin" && password === "admin") {
-      localStorage.setItem("auth", "true");
-      navigate("/dashboard");
+    setLoading(true);
+    setError("");
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      if (error.message === "Invalid login credentials") {
+        setError("Usuário ou senha inválidos");
+      } else {
+        setError(error.message);
+      }
     } else {
-      setError("Usuário ou senha inválidos");
+      toast.success("Login realizado com sucesso");
+      navigate("/dashboard");
     }
   };
 
@@ -60,12 +76,13 @@ export default function Index() {
                 <p className="text-xs text-destructive bg-destructive/10 px-3 py-2 rounded-lg">{error}</p>
               )}
               <div className="space-y-1.5">
-                <label className="text-sm text-foreground">Usuário</label>
+                <label className="text-sm text-foreground">E-mail</label>
                 <input
-                  type="text"
+                  type="email"
                   value={email}
                   onChange={(e) => { setEmail(e.target.value); setError(""); }}
-                  placeholder="admin"
+                  placeholder="seu@email.com"
+                  required
                   className="w-full px-3 py-2.5 bg-secondary border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
@@ -76,15 +93,23 @@ export default function Index() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
+                  required
                   className="w-full px-3 py-2.5 bg-secondary border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity"
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
               >
-                <LogIn className="w-4 h-4" />
-                Entrar
+                {loading ? (
+                  <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
+                ) : (
+                  <>
+                    <LogIn className="w-4 h-4" />
+                    Entrar
+                  </>
+                )}
               </button>
             </div>
           </form>
