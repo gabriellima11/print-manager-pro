@@ -30,12 +30,12 @@ export default function Alertas() {
               const printer = printers.find((p) => p.id === e.impressora_id);
               const isOffline = e.tipo === "offline";
               return (
-                <div key={e.id} className={`glass-card rounded-xl p-4 flex items-start gap-4 ${isOffline ? "border-destructive/20" : "border-warning/20"}`}>
+                <div key={e.id} className={`glass-card rounded-xl p-3 sm:p-4 flex items-start gap-3 sm:gap-4 ${isOffline ? "border-destructive/20" : "border-warning/20"}`}>
                   <div className={`p-2 rounded-lg ${isOffline ? "bg-destructive/10 text-destructive" : "bg-warning/10 text-warning"}`}>
                     {isOffline ? <WifiOff className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                       <h3 className="text-sm font-semibold text-foreground">{printer?.nome ?? "Impressora"}</h3>
                       <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${isOffline ? "bg-destructive/10 text-destructive" : "bg-warning/10 text-warning"}`}>
                         {isOffline ? "Offline" : "Toner Baixo"}
@@ -44,7 +44,7 @@ export default function Alertas() {
                     <p className="text-sm text-muted-foreground mt-1">
                       {isOffline ? "Sem resposta SNMP — impressora offline" : `Toner ${corLabel[e.cor!] ?? e.cor} abaixo de 10%`}
                     </p>
-                    <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2 text-xs text-muted-foreground">
                       <span>IP: {printer?.ip}</span>
                       <span>Sede: {getSedeNome(sedes, printer?.sede_id ?? "")}</span>
                       <span>{new Date(e.timestamp).toLocaleString("pt-BR")}</span>

@@ -34,19 +34,19 @@ export default function Dashboard() {
           <p className="text-sm text-muted-foreground mt-1">Visão geral do parque de impressoras</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <StatsCard title="Total de Impressoras" value={total} icon={Printer} subtitle={`${totalPages.toLocaleString("pt-BR")} páginas`} />
           <StatsCard title="Online" value={online} icon={Wifi} variant="success" />
           <StatsCard title="Offline" value={offline} icon={WifiOff} variant="danger" />
           <StatsCard title="Toners Críticos" value={criticalCount} icon={AlertTriangle} variant="warning" subtitle="≤ 10% restante" />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <UsageChart />
           <SedeChart />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <RankingTable />
           <AlertsList />
         </div>

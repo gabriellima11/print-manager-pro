@@ -101,9 +101,9 @@ Deno.serve(async (req) => {
         printerError = error;
       }
 
-      if (printerError) {
+      if (printerError || !printer) {
         console.error("Printer upsert error:", printerError);
-        results.push({ ip: p.ip, error: printerError.message });
+        results.push({ ip: p.ip, error: printerError?.message ?? "Unknown error" });
         continue;
       }
 
@@ -182,7 +182,7 @@ Deno.serve(async (req) => {
     });
   } catch (error) {
     console.error("Agent collect error:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: (error as Error).message }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
