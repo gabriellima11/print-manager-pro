@@ -19,6 +19,7 @@ export default function SedeChart() {
               <Tooltip
                 contentStyle={{ backgroundColor: "hsl(220, 22%, 11%)", border: "1px solid hsl(220, 18%, 18%)", borderRadius: "8px", color: "hsl(210, 40%, 96%)" }}
                 formatter={(value: number) => [value.toLocaleString("pt-BR"), "Páginas"]}
+                labelFormatter={(label) => label}
               />
               <Bar dataKey="pages" fill="hsl(174, 100%, 42%)" radius={[4, 4, 0, 0]} />
             </BarChart>
