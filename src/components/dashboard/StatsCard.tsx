@@ -21,7 +21,7 @@ export default function StatsCard({ title, value, subtitle, icon: Icon, variant 
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm text-muted-foreground">{title}</p>
-          <p className="text-3xl font-bold text-foreground mt-1">{value}</p>
+          <p className="text-xl sm:text-3xl font-bold text-foreground mt-1">{value}</p>
           {subtitle && <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>}
         </div>
         <div className={`p-2.5 rounded-lg ${variantStyles[variant]}`}>
