@@ -172,7 +172,7 @@ export function useUsageBySede() {
           .filter((p) => p.sede_id === s.id)
           .reduce((sum, p) => sum + p.page_count, 0);
         const shortName = s.nome.length > 14 ? s.nome.substring(0, 12) + "..." : s.nome;
-        return { sede: shortName, pages };
+        return { sede: shortName, fullName: s.nome, pages };
       });
     },
   });
