@@ -12,6 +12,7 @@ export interface PrinterWithToners {
   ip: string;
   mac_address: string | null;
   modelo: string | null;
+  patrimonio: string | null;
   tipo: string;
   sede_id: string;
   status: string;
@@ -92,7 +93,7 @@ export function useUpdatePrinter() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (updates: { id: string; nome: string; ip: string; sede_id: string; page_count: number; mac_address: string | null; tipo: string; modelo: string | null }) => {
+    mutationFn: async (updates: { id: string; nome: string; ip: string; sede_id: string; page_count: number; mac_address: string | null; tipo: string; modelo: string | null; patrimonio?: string | null }) => {
       const { id, ...data } = updates;
       
       const { data: updatedRows, error } = await supabase
@@ -141,6 +142,28 @@ export function useDeletePrinter() {
   });
 }
 
+export function useAddPrinter() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (printer: { nome: string; ip: string; sede_id: string; tipo: string; modelo?: string | null; mac_address?: string | null; patrimonio?: string | null }) => {
+      const { data, error } = await supabase
+        .from("impressoras")
+        .insert([printer])
+        .select();
+      
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        throw new Error("A inserção foi bloqueada pelo banco de dados (RLS).");
+      }
+      return data[0];
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["printers"] });
+    },
+  });
+}
+
 export function useEventos(limit?: number) {
   return useQuery({
     queryKey: ["eventos", limit],
@@ -180,6 +203,85 @@ export function useUsageBySede() {
 
 export function getSedeNome(sedes: Sede[], sedeId: string): string {
   return sedes.find((s) => s.id === sedeId)?.nome ?? "Desconhecida";
+}
+
+export function useAddSede() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (nome: string) => {
+      const { data, error } = await supabase
+        .from("sedes")
+        .insert([{ nome }])
+        .select();
+      
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        throw new Error("A inserção foi bloqueada pelo banco de dados (RLS).");
+      }
+      return data[0];
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sedes"] });
+    },
+  });
+}
+
+export function useUpdateSede() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, nome }: { id: string; nome: string }) => {
+      const { data, error } = await supabase
+        .from("sedes")
+        .update({ nome })
+        .eq("id", id)
+        .select();
+      
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        throw new Error("A atualização foi bloqueada pelo banco de dados (RLS).");
+      }
+      return data[0];
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sedes"] });
+    },
+  });
+}
+
+export function useDeleteSede() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      // First check if there are printers assigned to this sede
+      const { data: printers, error: pErr } = await supabase
+        .from("impressoras")
+        .select("id")
+        .eq("sede_id", id)
+        .limit(1);
+      
+      if (pErr) throw pErr;
+      if (printers && printers.length > 0) {
+        throw new Error("Não é possível excluir uma sede que possui impressoras vinculadas.");
+      }
+
+      const { data, error } = await supabase
+        .from("sedes")
+        .delete()
+        .eq("id", id)
+        .select();
+      
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        throw new Error("A exclusão foi bloqueada pelo banco de dados (RLS).");
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sedes"] });
+    },
+  });
 }
 
 export function getCriticalToners(printer: PrinterWithToners): { cor: string; nivel: number }[] {

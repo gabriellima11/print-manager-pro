@@ -1,0 +1,5 @@
+customtkinter
+requests
+pysnmp
+python-dotenv
+Pillow

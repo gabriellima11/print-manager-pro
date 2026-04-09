@@ -16,7 +16,7 @@ export default function Alertas() {
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Alertas</h1>
-          <p className="text-sm text-muted-foreground mt-1">{eventos.length} alertas registrados</p>
+          <p className="text-sm text-muted-foreground mt-1">Últimos {eventos.length} alertas registrados</p>
         </div>
 
         {isLoading ? (

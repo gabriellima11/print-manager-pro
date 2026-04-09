@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { PrinterWithToners, useUpdatePrinter, useDeletePrinter, useSedes } from "@/hooks/usePrinterData";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { Loader2, Trash2 } from "lucide-react";
 
@@ -25,6 +26,7 @@ export default function PrinterDetailsModal({ printer, isOpen, onClose }: Printe
     mac_address: "",
     tipo: "",
     modelo: "",
+    patrimonio: "",
   });
 
   // Reset form when printer changes
@@ -38,6 +40,7 @@ export default function PrinterDetailsModal({ printer, isOpen, onClose }: Printe
         mac_address: printer.mac_address || "",
         tipo: printer.tipo || "MONO",
         modelo: printer.modelo || "",
+        patrimonio: printer.patrimonio || "",
       });
       setIsEditing(false);
     }
@@ -56,6 +59,7 @@ export default function PrinterDetailsModal({ printer, isOpen, onClose }: Printe
         mac_address: formData.mac_address || null,
         tipo: formData.tipo,
         modelo: formData.modelo || null,
+        patrimonio: formData.patrimonio || null,
       });
       
       toast.success("Impressora atualizada com sucesso");
@@ -88,102 +92,118 @@ export default function PrinterDetailsModal({ printer, isOpen, onClose }: Printe
           <DialogTitle>Detalhes da Impressora</DialogTitle>
         </DialogHeader>
         
-        <div className="grid gap-4 py-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Nome</label>
-            <input
-              type="text"
-              value={formData.nome}
-              onChange={(e) => setFormData(prev => ({ ...prev, nome: e.target.value }))}
-              readOnly={!isEditing}
-              className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted"}`}
-            />
-          </div>
+        <ScrollArea className="max-h-[70vh] pr-4">
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Nome</label>
+              <input
+                type="text"
+                value={formData.nome}
+                onChange={(e) => setFormData(prev => ({ ...prev, nome: e.target.value }))}
+                readOnly={!isEditing}
+                className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted"}`}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Endereço IP</label>
-            <input
-              type="text"
-              value={formData.ip}
-              onChange={(e) => setFormData(prev => ({ ...prev, ip: e.target.value }))}
-              readOnly={!isEditing}
-              className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted"}`}
-            />
-          </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Endereço IP</label>
+              <input
+                type="text"
+                value={formData.ip}
+                onChange={(e) => setFormData(prev => ({ ...prev, ip: e.target.value }))}
+                readOnly={!isEditing}
+                className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted"}`}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Modelo</label>
-            <input
-              type="text"
-              value={formData.modelo}
-              onChange={(e) => setFormData(prev => ({ ...prev, modelo: e.target.value }))}
-              readOnly={!isEditing}
-              placeholder={isEditing ? "Ex: HP LaserJet Pro" : "-"}
-              className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted"}`}
-            />
-          </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Modelo</label>
+              <input
+                type="text"
+                value={formData.modelo}
+                onChange={(e) => setFormData(prev => ({ ...prev, modelo: e.target.value }))}
+                readOnly={!isEditing}
+                placeholder={isEditing ? "Ex: HP LaserJet Pro" : "-"}
+                className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted"}`}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">
-              Endereço MAC <span className="text-muted-foreground font-normal">(Opcional)</span>
-            </label>
-            <input
-              type="text"
-              value={formData.mac_address}
-              onChange={(e) => setFormData(prev => ({ ...prev, mac_address: e.target.value }))}
-              readOnly={!isEditing}
-              placeholder={isEditing ? "Ex: 00:1A:2B:3C:4D:5E" : "-"}
-              className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted"}`}
-            />
-          </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                Endereço MAC <span className="text-muted-foreground font-normal">(Opcional)</span>
+              </label>
+              <input
+                type="text"
+                value={formData.mac_address}
+                onChange={(e) => setFormData(prev => ({ ...prev, mac_address: e.target.value }))}
+                readOnly={!isEditing}
+                placeholder={isEditing ? "Ex: 00:1A:2B:3C:4D:5E" : "-"}
+                className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted"}`}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Sede</label>
-            <select
-              value={formData.sede_id}
-              onChange={(e) => setFormData(prev => ({ ...prev, sede_id: e.target.value }))}
-              disabled={!isEditing}
-              className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted opacity-100"}`}
-            >
-              {sedes.map((s) => (
-                <option key={s.id} value={s.id}>{s.nome}</option>
-              ))}
-            </select>
-          </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                Patrimônio <span className="text-muted-foreground font-normal">(Opcional)</span>
+              </label>
+              <input
+                type="text"
+                value={formData.patrimonio}
+                onChange={(e) => setFormData(prev => ({ ...prev, patrimonio: e.target.value }))}
+                readOnly={!isEditing}
+                placeholder={isEditing ? "Ex: PAT-123456" : "-"}
+                className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted"}`}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Contador de Páginas</label>
-            <input
-              type="number"
-              value={formData.page_count}
-              onChange={(e) => setFormData(prev => ({ ...prev, page_count: Number(e.target.value) }))}
-              readOnly={!isEditing}
-              className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted"}`}
-            />
-          </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Sede</label>
+              <select
+                value={formData.sede_id}
+                onChange={(e) => setFormData(prev => ({ ...prev, sede_id: e.target.value }))}
+                disabled={!isEditing}
+                className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted opacity-100"}`}
+              >
+                {sedes.map((s) => (
+                  <option key={s.id} value={s.id}>{s.nome}</option>
+                ))}
+              </select>
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Tipo</label>
-            <select
-              value={formData.tipo}
-              onChange={(e) => setFormData(prev => ({ ...prev, tipo: e.target.value }))}
-              disabled={!isEditing}
-              className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted opacity-100"}`}
-            >
-              <option value="MONO">Monocromática</option>
-              <option value="COLOR">Colorida</option>
-            </select>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Contador de Páginas</label>
+              <input
+                type="number"
+                value={formData.page_count}
+                onChange={(e) => setFormData(prev => ({ ...prev, page_count: Number(e.target.value) }))}
+                readOnly={!isEditing}
+                className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted"}`}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Tipo</label>
+              <select
+                value={formData.tipo}
+                onChange={(e) => setFormData(prev => ({ ...prev, tipo: e.target.value }))}
+                disabled={!isEditing}
+                className={`w-full px-3 py-2 rounded-lg text-sm transition-colors ${isEditing ? "bg-secondary border border-border focus:ring-2 focus:ring-primary/50" : "bg-muted opacity-100"}`}
+              >
+                <option value="MONO">Monocromática</option>
+                <option value="COLOR">Colorida</option>
+              </select>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4 mt-2">
+               <div className="space-y-1 p-3 bg-secondary/50 rounded-lg">
+                 <span className="text-xs text-muted-foreground block">Status</span>
+                 <span className={`text-sm font-medium ${printer.status === 'online' ? 'text-success' : 'text-destructive'}`}>
+                   {printer.status === 'online' ? 'Online' : 'Offline'}
+                 </span>
+               </div>
+            </div>
           </div>
-          
-          <div className="grid grid-cols-1 gap-4 mt-2">
-             <div className="space-y-1 p-3 bg-secondary/50 rounded-lg">
-               <span className="text-xs text-muted-foreground block">Status</span>
-               <span className={`text-sm font-medium ${printer.status === 'online' ? 'text-success' : 'text-destructive'}`}>
-                 {printer.status === 'online' ? 'Online' : 'Offline'}
-               </span>
-             </div>
-          </div>
-        </div>
+        </ScrollArea>
 
         <DialogFooter className="sm:justify-between items-center mt-4">
           {!isEditing ? (
@@ -220,6 +240,7 @@ export default function PrinterDetailsModal({ printer, isOpen, onClose }: Printe
                       mac_address: printer.mac_address || "",
                       tipo: printer.tipo || "MONO",
                       modelo: printer.modelo || "",
+                      patrimonio: printer.patrimonio || "",
                    });
                  }}
                  disabled={updatePrinter.isPending}

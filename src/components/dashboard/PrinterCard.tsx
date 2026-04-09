@@ -21,7 +21,7 @@ export default function PrinterCard({ printer, onClick }: PrinterCardProps) {
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-semibold text-foreground truncate">{printer.nome}</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
-            {printer.modelo ? `${printer.modelo} · ` : ""}{printer.ip} · {getSedeNome(sedes, printer.sede_id)}
+            {printer.patrimonio ? `[${printer.patrimonio}] · ` : ""}{printer.modelo ? `${printer.modelo} · ` : ""}{printer.ip} · {getSedeNome(sedes, printer.sede_id)}
           </p>
         </div>
         <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${

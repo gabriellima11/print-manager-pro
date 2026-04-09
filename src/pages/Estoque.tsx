@@ -116,7 +116,7 @@ export default function Estoque() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredToners.map((toner) => {
-              const isLowStock = toner.quantidade <= toner.quantidade_minima;
+              const isLowStock = toner.quantidade < toner.quantidade_minima;
               return (
                 <div key={toner.id} className="glass-card rounded-xl p-5 relative group transition-all hover:border-primary/30">
                   <div className="absolute top-4 right-4 flex opacity-0 group-hover:opacity-100 transition-opacity gap-1">

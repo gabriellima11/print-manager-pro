@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { LayoutDashboard, Printer, AlertTriangle, BarChart3, Building2, Menu, X, LogOut, Package } from "lucide-react";
+import { LayoutDashboard, Printer, AlertTriangle, BarChart3, Building2, Menu, X, LogOut, Package, User } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { User as SupabaseUser } from "@supabase/supabase-js";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -13,7 +15,14 @@ const navItems = [
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const location = useLocation();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+  }, []);
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -61,7 +70,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </nav>
 
         {/* Footer */}
-        <div className="p-2 border-t border-sidebar-border">
+        <div className="p-2 border-t border-sidebar-border space-y-1">
+          {user && (
+            <div className={`flex items-center gap-3 px-3 py-2 text-sm font-medium text-foreground transition-all ${collapsed ? "justify-center" : ""}`}>
+              <div className="w-5 h-5 flex items-center justify-center flex-shrink-0 rounded-full bg-secondary">
+                <User className="w-3 h-3 text-muted-foreground" />
+              </div>
+              {!collapsed && (
+                <span className="truncate max-w-[150px]">
+                  {user.user_metadata?.full_name || user.email?.split('@')[0]}
+                </span>
+              )}
+            </div>
+          )}
           <NavLink
             to="/"
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all"

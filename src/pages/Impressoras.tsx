@@ -2,14 +2,16 @@ import { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import PrinterCard from "@/components/dashboard/PrinterCard";
 import PrinterDetailsModal from "@/components/dashboard/PrinterDetailsModal";
+import AddPrinterModal from "@/components/dashboard/AddPrinterModal";
 import { usePrinters, useSedes, PrinterWithToners } from "@/hooks/usePrinterData";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, Plus } from "lucide-react";
 
 export default function Impressoras() {
   const [search, setSearch] = useState("");
   const [sedeFilter, setSedeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedPrinter, setSelectedPrinter] = useState<PrinterWithToners | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const { data: printers = [], isLoading } = usePrinters();
   const { data: sedes = [] } = useSedes();
@@ -24,9 +26,18 @@ export default function Impressoras() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Impressoras</h1>
-          <p className="text-sm text-muted-foreground mt-1">{printers.length} dispositivos monitorados</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Impressoras</h1>
+            <p className="text-sm text-muted-foreground mt-1">{printers.length} dispositivos monitorados</p>
+          </div>
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Adicionar Impressora
+          </button>
         </div>
 
         <div className="flex flex-wrap gap-3">
@@ -83,6 +94,11 @@ export default function Impressoras() {
           printer={selectedPrinter} 
           isOpen={!!selectedPrinter} 
           onClose={() => setSelectedPrinter(null)} 
+        />
+
+        <AddPrinterModal 
+          isOpen={isAddModalOpen} 
+          onClose={() => setIsAddModalOpen(false)} 
         />
       </div>
     </DashboardLayout>
