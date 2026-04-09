@@ -18,9 +18,9 @@ interface EmailPayload {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { 
-      status: 200, 
-      headers: corsHeaders 
+    return new Response("ok", {
+      status: 200,
+      headers: corsHeaders
     });
   }
 
@@ -29,7 +29,7 @@ Deno.serve(async (req) => {
     const payload: EmailPayload = await req.json();
 
     const { data, error } = await resend.emails.send({
-      from: "Print Manager Pro <gabriel.lima@southti.com.br>",
+      from: "Print Manager Pro <gabrielflima05@gmail.com>",
       to: ["gabriel.lima@southti.com.br"],
       subject: `Notificação de Retirada de Toner - ${payload.sede}`,
       html: `
