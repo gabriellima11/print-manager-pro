@@ -147,6 +147,7 @@ export type Database = {
           modelo: string | null
           nome: string
           page_count: number
+          patrimonio: string | null
           sede_id: string
           status: string
           tipo: string
@@ -161,6 +162,7 @@ export type Database = {
           modelo?: string | null
           nome: string
           page_count?: number
+          patrimonio?: string | null
           sede_id: string
           status?: string
           tipo: string
@@ -175,6 +177,7 @@ export type Database = {
           modelo?: string | null
           nome?: string
           page_count?: number
+          patrimonio?: string | null
           sede_id?: string
           status?: string
           tipo?: string
@@ -258,16 +261,19 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          network_range: string | null
           nome: string
         }
         Insert: {
           created_at?: string
           id?: string
+          network_range?: string | null
           nome: string
         }
         Update: {
           created_at?: string
           id?: string
+          network_range?: string | null
           nome?: string
         }
         Relationships: []
